@@ -57,8 +57,8 @@ st.write("## The Height of the Top 10 Tallest Pokémon! 📏")
 
 # Create Altair chart for images
 image_chart = alt.Chart(top_10_tallest, height=500).mark_image(
-    width=40,
-    height=40
+    width=35,
+    height=35
 ).encode(
     x=alt.X('Pokemon', sort=None),  # Disable sorting to maintain original order
     y='Height',
