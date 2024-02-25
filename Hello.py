@@ -36,23 +36,6 @@ pokemon_df.rename(columns={'_name': 'Pokemon', 'height': 'Height'}, inplace=True
 # Sort the DataFrame by height in descending order and select the top 10 tallest Pokémon
 top_10_tallest = pokemon_df.nlargest(10, 'Height')
 
-##########################################################################################
-# Streamlit Data Editor
-##########################################################################################
-
-# Commented out the Data Editor section for now
-# st.data_editor(
-#     top_10_tallest,
-#     column_config={
-#         "sprite_url": st.column_config.ImageColumn(
-#             "Preview Image", help="Streamlit app preview screenshots"
-#         )
-#     },
-#     column_order=["sprite_url", "Height"],
-#     hide_index=True,
-# )
-
-
 # Streamlit Divider
 st.divider()
 
