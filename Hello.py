@@ -22,6 +22,7 @@ st.markdown(
 # Connect to DuckDB database
 con = duckdb.connect("md:?motherduck_token=" + st.secrets["motherduck_token"])
 
+
 # Query for filtered data
 query = """
 SELECT 
@@ -30,20 +31,25 @@ FROM my_db.main.pokemon
 """
 pokemon_df = con.execute(query).df()
 
+
 # Rename the '_name' column to 'Pokemon' and 'height' to 'Height' in the DataFrame
 pokemon_df.rename(columns={'_name': 'Pokemon', 'height': 'Height'}, inplace=True)
+
 
 # Sort the DataFrame by height in descending order and select the top 10 tallest Pokémon
 top_10_tallest = pokemon_df.nlargest(10, 'Height')
 
+
 # Streamlit Divider
 st.divider()
+
 
 ##########################################################################################
 # Streamlit Header for Bar Chart
 ##########################################################################################
 
 st.write("## The Height of the Top 10 Tallest Pokémon! 📏")
+
 
 ##########################################################################################
 # Altair Charts
@@ -59,6 +65,7 @@ image_chart = alt.Chart(top_10_tallest, height=500).mark_image(
     url='sprite_url'
 )
 
+
 # Create Altair chart for bars
 bar_chart = alt.Chart(top_10_tallest, height=500).mark_bar(
     color='dimgrey'
@@ -67,10 +74,12 @@ bar_chart = alt.Chart(top_10_tallest, height=500).mark_bar(
     y='Height'
 )
 
+
 # Layer the image chart and bar chart
 combined_chart = alt.layer(bar_chart, image_chart).configure_axis(
     grid=False
 )
+
 
 # Display the combined chart using Streamlit
 st.altair_chart(combined_chart, use_container_width=True)
