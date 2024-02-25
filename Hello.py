@@ -2,14 +2,13 @@ import streamlit as st
 import duckdb
 
 st.set_page_config(
-    page_title="DuckDB",
-    page_icon="👋",
+    page_title="PokeData",
+    page_icon="📊",
 )
 
-st.write("# DuckDB is Awesome! 👋")
+st.write("# Welcome to PokéData! 👋")
 
-
-con = duckdb.connect('md:?motherduck_token=<token>')
+con = duckdb.connect("md:?motherduck_token=" + st.secrets["motherduck_token"])
 
 # Query for filtered data
 query = """
@@ -19,4 +18,5 @@ FROM my_db.main.pokemon
 """
 df = con.execute(query).df()
 
-st.text(df.head())
+st.text(df)
+
