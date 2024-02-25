@@ -10,7 +10,14 @@ st.set_page_config(
 )
 
 # Welcome message
-st.write("# Welcome to PokéData! 👋")
+st.markdown(
+    """
+        # Welcome to PokéData! 👋
+
+        *The #1 place to explore Pokémon data!*
+    """
+)
+
 
 # Connect to DuckDB database
 con = duckdb.connect("md:?motherduck_token=" + st.secrets["motherduck_token"])
