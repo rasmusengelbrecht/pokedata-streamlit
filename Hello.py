@@ -3,13 +3,16 @@ import duckdb
 import pandas as pd
 import altair as alt
 
+# Set Streamlit page configuration
 st.set_page_config(
     page_title="PokeData",
     page_icon="📊",
 )
 
+# Welcome message
 st.write("# Welcome to PokéData! 👋")
 
+# Connect to DuckDB database
 con = duckdb.connect("md:?motherduck_token=" + st.secrets["motherduck_token"])
 
 # Query for filtered data
@@ -20,14 +23,17 @@ FROM my_db.main.pokemon
 """
 pokemon_df = con.execute(query).df()
 
-# Rename the '_name' column to 'pokemon' in the DataFrame
-pokemon_df.rename(columns={'_name': 'Pokemon','height': 'Height'}, inplace=True)
+# Rename the '_name' column to 'Pokemon' and 'height' to 'Height' in the DataFrame
+pokemon_df.rename(columns={'_name': 'Pokemon', 'height': 'Height'}, inplace=True)
 
 # Sort the DataFrame by height in descending order and select the top 10 tallest Pokémon
 top_10_tallest = pokemon_df.nlargest(10, 'Height')
 
+##########################################################################################
+# Streamlit Data Editor
+##########################################################################################
 
-
+# Commented out the Data Editor section for now
 # st.data_editor(
 #     top_10_tallest,
 #     column_config={
@@ -39,9 +45,19 @@ top_10_tallest = pokemon_df.nlargest(10, 'Height')
 #     hide_index=True,
 # )
 
+
+# Streamlit Divider
 st.divider()
 
+##########################################################################################
+# Streamlit Header for Bar Chart
+##########################################################################################
+
 st.write("## The Height of the Top 10 Tallest Pokémon! 📏")
+
+##########################################################################################
+# Altair Charts
+##########################################################################################
 
 # Create Altair chart for images
 image_chart = alt.Chart(top_10_tallest, height=500).mark_image(
@@ -62,6 +78,9 @@ bar_chart = alt.Chart(top_10_tallest, height=500).mark_bar(
 )
 
 # Layer the image chart and bar chart
-combined_chart = alt.layer(bar_chart, image_chart)
+combined_chart = alt.layer(bar_chart, image_chart).configure_axis(
+    grid=False
+)
 
+# Display the combined chart using Streamlit
 st.altair_chart(combined_chart, use_container_width=True)
